@@ -1,3 +1,18 @@
+..
+      Copyright 2012 Spanish National Research Council
+
+      Licensed under the Apache License, Version 2.0 (the "License"); you may
+      not use this file except in compliance with the License. You may obtain
+      a copy of the License at
+
+          http://www.apache.org/licenses/LICENSE-2.0
+
+      Unless required by applicable law or agreed to in writing, software
+      distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+      WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+      License for the specific language governing permissions and limitations
+      under the License.
+
 VOMS module Installation
 ========================
 
@@ -14,6 +29,14 @@ Install from PPA
 This option is no longer supported. Please install it from the source as stated
 below.
 
+Install from pip
+~~~~~~~~~~~~~~~~
+
+With a running Keystone Icehouse you can install the VOMS module with the
+following command (note the version range)::
+
+    pip install 'python-keystone-voms>=2014.1,<2014.2'
+
 Install from source
 ~~~~~~~~~~~~~~~~~~~
 
@@ -21,10 +44,10 @@ First, uninstall any other `keystone-voms` installation::
 
     sudo pip uninstall keystone-voms
 
-With a running Icehouse, simply install this egg. In the upper-level
+With a running Keystone Icehouse, simply install this egg. In the upper-level
 directory run ``python setup.py install``::
 
-    git clone git://github.com/IFCA/keystone-voms.git -b stable/havana
+    git clone git://github.com/IFCA/keystone-voms.git -b stable/icehouse
     cd keystone-voms
     sudo pip install .
 

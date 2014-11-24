@@ -1,3 +1,18 @@
+..
+      Copyright 2012 Spanish National Research Council
+
+      Licensed under the Apache License, Version 2.0 (the "License"); you may
+      not use this file except in compliance with the License. You may obtain
+      a copy of the License at
+
+          http://www.apache.org/licenses/LICENSE-2.0
+
+      Unless required by applicable law or agreed to in writing, software
+      distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+      WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+      License for the specific language governing permissions and limitations
+      under the License.
+
 VOMS module Configuration
 =========================
 
@@ -52,7 +67,9 @@ second server needs to be present as well::
     /C=GR/O=HellasGrid/OU=Certification Authorities/CN=HellasGrid CA 2006
 
 For more details, please check the following page `How to configure VOMS LSC
-files <https://twiki.cern.ch/twiki/bin/view/LCG/VOMSLSCfileConfiguration#LSC_file_configuration_by_other>`_.
+files <http://italiangrid.github.io/voms/documentation/voms-clients-guide/3.0.3/#voms-trust>`_.
+Note that you do not need to install the ``.pem`` certificate, just the ``.lsc``
+file.
 
 VO to local tenant mapping
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
