@@ -57,7 +57,7 @@ opts = [
     cfg.StrOpt("lcmaps_db",
                help="LCMAPS DB file"),
     cfg.BoolOpt("use_lcmaps",
-                default=True,
+                default=False,
                 help="If enabled, user names will be taken from lcmaps"
                 "mapping instead of DNs."),
 ]
