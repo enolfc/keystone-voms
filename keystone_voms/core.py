@@ -26,6 +26,7 @@ from keystone.openstack.common import jsonutils
 from keystone.openstack.common import log
 
 from keystone_voms import voms_helper
+from keystone_voms import lcmaps_helper
 
 LOG = log.getLogger(__name__)
 
@@ -56,6 +57,15 @@ opts = [
     cfg.ListOpt("user_roles",
                 default=["_member_"],
                 help="List of roles to add to new users."),
+    cfg.StrOpt("lcmaps_lib",
+               default="liblcmaps_return_account_from_pem.so",
+               help="LCMAPS library to use"),
+    cfg.StrOpt("lcmaps_db",
+               help="LCMAPS DB file"),
+    cfg.BoolOpt("use_lcmaps",
+                default=True,
+                help="If enabled, user names will be taken from lcmaps"
+                "mapping instead of DNs."),
 ]
 CONF.register_opts(opts, group="voms")
 
@@ -188,6 +198,14 @@ class VomsAuthNMiddleware(wsgi.Middleware):
                 d["fqans"].append(fqan)
 
         return d
+
+    def _get_lcmaps_info(self, ssl_info):
+        cert_chain = [ssl_info.get("cert", "")]
+        cert_chain.extend(ssl_info.get("chain", []))
+
+        with lcmaps_helper.LCMAPS(CONF.voms.lcmaps_lib,
+                                  CONF.voms.lcmaps_db) as l:
+            return l.retrieve('\n'.join(cert_chain))
 
     @staticmethod
     def _split_fqan(fqan):
@@ -331,6 +349,9 @@ class VomsAuthNMiddleware(wsgi.Middleware):
                 ssl_dict["chain"].append(v)
 
         voms_info = self._get_voms_info(ssl_dict)
+
+        if CONF.voms.use_lcmaps:
+            voms_info.update(self._get_lcmaps_info(ssl_dict))
 
         params = request.environ.get(PARAMS_ENV)
         tenant_from_req = params["auth"].get("tenantName", None)
