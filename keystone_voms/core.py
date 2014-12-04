@@ -12,6 +12,7 @@
 # License for the specific language governing permissions and limitations
 # under the License.
 
+import re
 import uuid
 
 import M2Crypto
@@ -57,7 +58,19 @@ opts = [
     cfg.ListOpt("user_roles",
                 default=["_member_"],
                 help="List of roles to add to new users."),
+    cfg.BoolOpt("allow_subproxy",
+                default=False,
+                help="If enabled, robot certificates with subproxy "
+                "information will create sub-users"),
+    cfg.ListOpt("subproxy_robots",
+                default=[],
+                help="List of Robot certificates DN allowed to create "
+                "subproxy users (set to * for allowing any DN)"),
+    cfg.StrOpt("subproxy_user_prefix",
+               default="CN=eToken:",
+               help="Expected prefix for the subproxy user specification"),
 ]
+
 CONF.register_opts(opts, group="voms")
 
 PARAMS_ENV = keystone.middleware.PARAMS_ENV
@@ -66,6 +79,12 @@ CONTEXT_ENV = keystone.middleware.CONTEXT_ENV
 SSL_CLIENT_S_DN_ENV = "SSL_CLIENT_S_DN"
 SSL_CLIENT_CERT_ENV = "SSL_CLIENT_CERT"
 SSL_CLIENT_CERT_CHAIN_ENV_PREFIX = "SSL_CLIENT_CERT_CHAIN_"
+
+# The subject distinguished name of a robot MUST unambiguously identify the
+# entity as a robot by including the string "Robot", followed by a
+# non-alphanumeric separator, in a commonName component of the subject name
+# See: https://www.eugridpma.org/guidelines/robot/approved-robots-20120912.pdf
+ROBOT_PROXY_REGEXP = r'^(\/.+)/CN=Robot[^\w\\]+([^\/]+)'
 
 
 class VomsAuthNMiddleware(wsgi.Middleware):
@@ -109,6 +128,29 @@ class VomsAuthNMiddleware(wsgi.Middleware):
             chain.push(aux)
         return cert, chain
 
+    def _get_subproxy_info(self, cert, voms_info):
+        # is the user a robot?
+        m = re.match(ROBOT_PROXY_REGEXP, voms_info['user'])
+        if not m:
+            return {}
+        LOG.debug('Robot proxy detected with DN: %s', voms_info['user'])
+        # is the user allowed to create subusers?
+        if '*' not in CONF.voms.subproxy_robots:
+            if voms_info['user'] not in CONF.voms.subproxy_robots:
+                LOG.debug('This robot is not allowed to create subusers')
+                return {}
+        # extract the subproxy DN
+        # relaying on OpenSSL formatting, may break
+        flags = M2Crypto.m2.XN_FLAG_SEP_MULTILINE
+        subject_dn = cert.get_subject().as_text(flags=flags).split('\n')
+        etoken_dn = ['']
+        for dn in subject_dn:
+            etoken_dn.append(dn)
+            if dn.startswith(CONF.voms.subproxy_user_prefix):
+                LOG.debug('Found eToken (%s), returning subuser', dn)
+                return {'user': '/'.join(etoken_dn)}
+        return {}
+
     def _get_voms_info(self, ssl_info):
         """Extract voms info from ssl_info and return dict with it."""
 
@@ -142,6 +184,9 @@ class VomsAuthNMiddleware(wsgi.Middleware):
                 if fqan is None:
                     break
                 d["fqans"].append(fqan)
+
+        if CONF.voms.allow_subproxy:
+            d.update(self._get_subproxy_info(cert, d))
 
         return d
 
