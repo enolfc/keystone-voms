@@ -540,3 +540,19 @@ class VomsTokenService(test_auth.AuthTest):
         roles = [r['name'] for r in remote_token['access']['user']['roles']]
         self.assertNotIn("role1", roles)
         self.assertNotIn("role2", roles)
+
+    def test_allow_subproxy(self):
+        """Verify that allow_subproxy config does disable the feature"""
+        pass
+
+    def test_subproxy_user(self):
+        """Verify that the subproxy is extracted from a robot cert"""
+        pass
+
+    def test_all_subproxy_robots(self):
+        """Verify that only allowed robots generate subproxy info"""
+        pass
+
+    def test_specific_subproxy_robots(self):
+        """Verify that only allowed robots generate subproxy info"""
+        pass
