@@ -16,13 +16,13 @@ import uuid
 
 import M2Crypto
 from oslo.config import cfg
+from oslo.serialization import jsonutils
 
 from keystone.common import wsgi
 from keystone import exception as ks_exc
 from keystone import identity, assignment
+from keystone.i18n import _
 import keystone.middleware
-from keystone.openstack.common.gettextutils import _
-from keystone.openstack.common import jsonutils
 from keystone.openstack.common import log
 
 from keystone_voms import exception
