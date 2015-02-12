@@ -25,7 +25,7 @@ from keystone.tests import test_auth
 from keystone.tests import test_middleware
 
 import keystone_voms.core as ks_voms
-from  keystone_voms import exception
+from keystone_voms import exception
 
 
 CONF = config.CONF
@@ -417,7 +417,8 @@ class VomsTokenService(test_auth.AuthTest):
         remote_token = self.controller.authenticate(context,
                                                     params["auth"])
 
-        tenant_controller = controllers.Tenant()
+        # this is deprecated!
+        tenant_controller = controllers.TenantAssignment()
         fake_context = {
             "token_id": remote_token["access"]["token"]["id"],
             "query_string": {"limit": None},
