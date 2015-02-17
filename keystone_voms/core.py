@@ -84,7 +84,7 @@ SSL_CLIENT_CERT_CHAIN_ENV_PREFIX = "SSL_CLIENT_CERT_CHAIN_"
 # entity as a robot by including the string "Robot", followed by a
 # non-alphanumeric separator, in a commonName component of the subject name
 # See: https://www.eugridpma.org/guidelines/robot/approved-robots-20120912.pdf
-ROBOT_PROXY_REGEXP = r'^(\/.+)/CN=Robot[^\w\\]+([^\/]+)'
+ROBOT_PROXY_REGEXP = r'^(\/.+)/CN=[Rr]obot[^\w\\]+([^\/]+)'
 
 
 class VomsAuthNMiddleware(wsgi.Middleware):
@@ -139,6 +139,7 @@ class VomsAuthNMiddleware(wsgi.Middleware):
             if voms_info['user'] not in CONF.voms.subproxy_robots:
                 LOG.debug('This robot is not allowed to create subusers')
                 return {}
+        # TODO(enolfc): ensure that PUSP is the first delegation
         # extract the subproxy DN
         # relaying on OpenSSL formatting, may break
         flags = M2Crypto.m2.XN_FLAG_SEP_MULTILINE
