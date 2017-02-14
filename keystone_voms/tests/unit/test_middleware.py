@@ -426,9 +426,10 @@ class MiddlewareVomsAuthn(tests.TestCase):
 
     @mock.patch("keystone_voms.core.VomsAuthNMiddleware.resource_api",
                 create=True)
-    @mock.patch("keystone_voms.core.VomsAuthNMiddleware.identity_api")
+    @mock.patch("keystone_voms.core.VomsAuthNMiddleware.identity_api",
+                create=True)
     @mock.patch("__builtin__.open", mock.mock_open(read_data="{}"))
-    def test_middleware_process_response(self, m_idapi, m_resapi):
+    def test_get_user(self, m_idapi, m_resapi):
         v = FakeVOMS({"user": "/DC=o"})
 
         m_idapi.get_user_by_name.return_value = {"id": uuid.uuid4().hex}
@@ -447,5 +448,7 @@ class MiddlewareVomsAuthn(tests.TestCase):
         aux = core.VomsAuthNMiddleware(None)
         aux.voms_obj = v
         user, tenant = aux._get_user(None, resp)
+        print user, tenant
         resp = jsonutils.loads(resp.body)
         self.assertDictEqual(project, resp["tenants"][0])
+        self.assertFalse(True)
