@@ -75,6 +75,7 @@ SSL_CLIENT_CERT_CHAIN_ENV_PREFIX = "SSL_CLIENT_CERT_CHAIN_"
 ROBOT_PROXY_REGEXP = r'^(\/.+)/CN=[Rr]obot[^\w\\]+([^\/]+)$'
 PUSP_REGEXP = r'^(\/.+)/CN=[Rr]obot[^\w\\]+([^\/]+)/CN=eToken:([^\/]+)$'
 
+
 @dependency.requires('identity_api', 'assignment_api', 'resource_api',
                      'role_api')
 class VomsAuthNMiddleware(wsgi.Middleware):

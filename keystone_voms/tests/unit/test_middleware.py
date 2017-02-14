@@ -423,3 +423,29 @@ class MiddlewareVomsAuthn(tests.TestCase):
         resp = aux.process_response(None, resp)
         resp = jsonutils.loads(resp.body)
         self.assertDictEqual(project, resp["tenants"][0])
+
+    @mock.patch("keystone_voms.core.VomsAuthNMiddleware.resource_api",
+                create=True)
+    @mock.patch("keystone_voms.core.VomsAuthNMiddleware.identity_api")
+    @mock.patch("__builtin__.open", mock.mock_open(read_data="{}"))
+    def test_middleware_process_response(self, m_idapi, m_resapi):
+        v = FakeVOMS({"user": "/DC=o"})
+
+        m_idapi.get_user_by_name.return_value = {"id": uuid.uuid4().hex}
+
+        project_id = uuid.uuid4().hex
+        project = {"id": project_id, "name": "BAR"}
+        m_resapi.get_project_by_name.return_value = project
+
+        user_projects = {
+            "tenants": [
+                project,
+                {"id": uuid.uuid4().hex}
+            ]
+        }
+        resp = make_response(body=jsonutils.dumps(user_projects))
+        aux = core.VomsAuthNMiddleware(None)
+        aux.voms_obj = v
+        user, tenant = aux._get_user(None, resp)
+        resp = jsonutils.loads(resp.body)
+        self.assertDictEqual(project, resp["tenants"][0])
