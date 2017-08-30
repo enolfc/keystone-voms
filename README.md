@@ -1,9 +1,9 @@
 # Keystone VOMS auth module
 
-[![Travis](https://img.shields.io/travis/IFCA/keystone-voms/stable/newton.svg)](https://travis-ci.org/IFCA/keystone-voms)
-[![Coveralls](https://img.shields.io/coveralls/IFCA/keystone-voms/stable/newton.svg)](https://coveralls.io/github/IFCA/keystone-voms)
+[![Travis](https://img.shields.io/travis/IFCA/keystone-voms/stable/ocata.svg)](https://travis-ci.org/IFCA/keystone-voms)
+[![Coveralls](https://img.shields.io/coveralls/IFCA/keystone-voms/stable/ocata.svg)](https://coveralls.io/github/IFCA/keystone-voms)
 
-This module is intended to provide VOMS authentication to a Mitaka
+This module is intended to provide VOMS authentication to a Ocata
 OpenStack Keystone. It is designed to be integrated as an external
 authentication plugin, so that Keystone will preserve its original
 features and users will still be able to authenticate using any of the

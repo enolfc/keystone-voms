@@ -23,13 +23,13 @@ authentication plugin, so that Keystone will preserve its original
 features and users will still be able to authenticate using any of the
 Keystone native mechanisms.
 
-This documentation is based on a Keystone 9 (Mitaka) installation.
+This documentation is based on a Keystone 11 (Ocata) installation.
 
 .. attention::
     If you are upgrading from any priorversion, check the
     :doc:`Upgrade nodes <upgrade>` before proceeding.
 
-* Only V2 authentication is supported in Mitaka so far.
+* Only V2 authentication is supported in Ocata so far.
 * If you are using the 2014.1 (Icehouse) version, please check the `Icehouse
   Documentation <http://keystone-voms.readthedocs.org/en/stable-icehouse/>`_.
   Note that support in Icehouse is only for V2 authentication.
@@ -42,6 +42,13 @@ This documentation is based on a Keystone 9 (Mitaka) installation.
 * If you are using the 8.0.0 (Liberty) version, please check the `Liberty
   Documentation <http://keystone-voms.readthedocs.org/en/stable-liberty/>`_.
   Note that support in Liberty is only for V2 authentication.
+* If you are using the 9.0.0 (Mitaka) version, please check the `Mitaka
+  Documentation <http://keystone-voms.readthedocs.org/en/stable-mitaka/>`_.
+  Note that support in Mitaka is only for V2 authentication.
+* If you are using the 10.0.0 (Newton) version, please check the `Newton
+  Documentation <http://keystone-vomsNewton).readthedocs.org/en/stable-newton/>`_.
+  Note that support in Newton is only for V2 authentication.
+
 
 
 User documentation

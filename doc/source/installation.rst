@@ -16,7 +16,7 @@
 VOMS module Installation
 ========================
 
-This module assumes that you are running the Keystone 9 (Mitaka) version.
+This module assumes that you are running the Keystone 11 (Ocata) version.
 
 Install the Keystone VOMS module
 --------------------------------
@@ -43,7 +43,7 @@ Install from pip
 With a running Keystone you can install the VOMS module with the
 following command (note the version range)::
 
-    $ pip install 'keystone-voms>=9.0.0,<10.0.0'
+    $ pip install 'keystone-voms>=11.0.0,<12.0.0'
 
 Install from source
 ~~~~~~~~~~~~~~~~~~~
@@ -56,7 +56,7 @@ old name of the package and should be removed::
 With a running Keystone, simply install this egg. In the upper-level
 directory run ``python setup.py install``::
 
-    $ git clone git://github.com/IFCA/keystone-voms.git -b stable/mitaka
+    $ git clone git://github.com/IFCA/keystone-voms.git -b stable/ocata
     $ cd keystone-voms
     $ pip install .
 

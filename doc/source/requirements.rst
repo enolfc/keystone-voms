@@ -22,7 +22,7 @@ an HTTP server (Apache will be used in this documentation, but any webserver
 could make it). Keystone project has deprecated eventlet, so you should be already
 running Keystone in such way.
 
-* Keystone Mitaka.
+* Keystone Ocata.
 * EUgridPMA CA certificates at the latest version.
 * fetch-crl package.
 * VOMS libraries.
